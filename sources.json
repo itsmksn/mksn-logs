@@ -1,0 +1,38 @@
+[
+  {
+    "id": "yt-main",
+    "name": "mksn",
+    "type": "youtube",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC3w6GHS0la5KI3xyTtpdWsA"
+  },
+  {
+    "id": "yt-cuts",
+    "name": "Нарізки mksn",
+    "type": "youtube",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCcO8WEhQ_gekpGt2nnIyQ4Q"
+  },
+  {
+    "id": "yt-streams",
+    "name": "Стріми mksn",
+    "type": "youtube",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCxJnosNoK4B0JdmXU_kwyMA"
+  },
+  {
+    "id": "tiktok",
+    "name": "TikTok",
+    "type": "tiktok",
+    "url": "https://rsshub.rss.tips/tiktok/user/@its.mksn"
+  },
+  {
+    "id": "twitch-vod",
+    "name": "Twitch VOD",
+    "type": "twitch_vod",
+    "url": "https://rsshub.rss.tips/twitch/video/its_mksn"
+  },
+  {
+    "id": "twitch-live",
+    "name": "Twitch",
+    "type": "twitch_live",
+    "url": "https://rsshub.rss.tips/twitch/live/its_mksn"
+  }
+]
