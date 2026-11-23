@@ -33,7 +33,12 @@ SOURCES_PATH = os.path.join(ROOT, "sources.json")
 
 MAX_SEEN = 200
 MAX_POST_PER_SOURCE = 5
+MAX_TOTAL_POSTS = 10
 MAX_AGE = timedelta(days=7)
+
+# Keep a run comfortably inside one billed minute even if a feed hangs.
+TIME_BUDGET_SECONDS = 45
+HTTP_TIMEOUT_SECONDS = 8
 
 DRY_RUN = "--dry-run" in sys.argv or os.environ.get("DRY_RUN") == "1"
 TEST = "--test" in sys.argv
@@ -61,7 +66,7 @@ except Exception:  # Windows without tzdata, or an old Python
 # HTTP / feeds
 # --------------------------------------------------------------------------- #
 
-def http_get(url: str, timeout: int = 30) -> bytes:
+def http_get(url: str, timeout: int = HTTP_TIMEOUT_SECONDS) -> bytes:
     req = urllib.request.Request(
         url,
         headers={
@@ -303,9 +308,15 @@ def main() -> int:
     sources = load_sources()
     state = load_state()
     now = datetime.now(timezone.utc)
+    started = time.monotonic()
     posted_total = 0
+    post_budget = MAX_TOTAL_POSTS
 
     for src in sources:
+        if time.monotonic() - started > TIME_BUDGET_SECONDS:
+            print("time budget exhausted; remaining sources will be checked next run")
+            break
+
         sid = src["id"]
         source_state = state["sources"].setdefault(sid, {"initialized": False, "seen": []})
         seen = source_state.setdefault("seen", [])
@@ -331,11 +342,15 @@ def main() -> int:
         failed_ids: set[str] = set()
 
         for item in to_post:
+            if post_budget <= 0:
+                failed_ids.add(item["id"])  # stay unseen, post next run
+                continue
             try:
                 send_item(src, item)
+                post_budget -= 1
                 posted_total += 1
                 print(f"[{sid}] posted: {item['title'][:90]}")
-                time.sleep(1.2)
+                time.sleep(0.7)
             except Exception as exc:  # noqa: BLE001
                 failed_ids.add(item["id"])
                 print(f"[{sid}] send failed: {exc}")
