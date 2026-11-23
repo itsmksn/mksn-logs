@@ -2,9 +2,9 @@ name: logs
 
 on:
   schedule:
-    # GitHub cron is UTC. Every 30 minutes keeps usage inside the
-    # 2,000 free private-repo Actions minutes per month.
-    - cron: "*/30 * * * *"
+    # GitHub cron is UTC. Once an hour keeps Actions usage low
+    # (~720 billed minutes per month on a private repo).
+    - cron: "0 * * * *"
   workflow_dispatch:
 
 permissions:
