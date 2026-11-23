@@ -4,7 +4,7 @@ on:
   schedule:
     # GitHub cron is UTC. Avoid minute 0: the start of every hour is
     # the busiest slot and GitHub may delay or drop scheduled runs.
-    - cron: "7 * * * *"
+    - cron: "42 * * * *"
   workflow_dispatch:
 
 permissions:
