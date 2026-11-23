@@ -40,7 +40,6 @@
 ## Локальний запуск
 
 ```bash
-pip install -r requirements.txt   # нічого не потрібно, залежностей немає
 python bot.py --dry-run           # показати, що бот запостив би
 ```
 
