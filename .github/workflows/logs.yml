@@ -1,10 +1,9 @@
 name: logs
 
 on:
-  schedule:
-    # GitHub cron is UTC. Avoid minute 0: the start of every hour is
-    # the busiest slot and GitHub may delay or drop scheduled runs.
-    - cron: "10 * * * *"
+  # Hourly runs are triggered externally by Google Apps Script via this
+  # endpoint. GitHub's own cron scheduler is intentionally not used: it is
+  # unreliable on this account and occasionally fires duplicate runs.
   workflow_dispatch:
 
 permissions:
